@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+TABS_JSON=$(mozrepl | sed -e 's/^"//' -e 's/"$//')
+
+if [[ -z $@ ]]; then
+    TAB_NAMES=$(echo "$TABS_JSON" | jq -r 'to_entries | map(select(.value!="") | .value) | .[]')
+
+    echo "$TAB_NAMES"
+else
+    TAB=$*
+
+    TAB_NUM=$(echo "$TABS_JSON" | jq -r "to_entries | map(select(.value | contains (\"${TAB//\"/\\\"}\")) | .key) | .[]")
+
+    mozrepl "$TAB_NUM" >/dev/null
+fi

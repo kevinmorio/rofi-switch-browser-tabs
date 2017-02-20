@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+import sys, re
+from telnetlib import Telnet
+
+class Mozrepl(object):
+    def __init__(self, ip="127.0.0.1", port=4242):
+        self.ip = ip
+        self.port = port
+        self.prompt = b"repl>"
+
+    def __enter__(self):
+        self.t = Telnet(self.ip, self.port)
+        intro = self.t.read_until(self.prompt, 1)
+        if not intro.endswith(self.prompt):
+            self.prompt = re.search(br"repl\d+>", intro).group(0)
+            print("Waited due to nonstandard prompt:", self.prompt.decode())
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.t.close()
+        del self.t
+
+    def js(self, command):
+        self.t.write(command.encode() + b"\n")
+        return self.t.read_until(self.prompt).decode().replace((b"\n" + self.prompt).decode(),'').strip()
+
+gettabs = """
+function getTabs() {
+    var tabs = {};
+    for (i = 0; i < gBrowser.browsers.length; i++) {
+        tabs[i] = gBrowser.browsers[i].contentTitle
+    }
+    return tabs;
+}
+JSON.stringify(getTabs());
+"""
+
+switchtotab = """
+gBrowser.tabContainer.selectedIndex=
+"""
+
+with Mozrepl() as mozrepl:
+    if len(sys.argv) > 1:
+        print(mozrepl.js(switchtotab + sys.argv[1]))
+    else:
+        print(mozrepl.js(gettabs))
+
