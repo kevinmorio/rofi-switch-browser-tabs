@@ -26,7 +26,7 @@ Chrome
 
 ####Installation
 1. `npm install -g chrome-remote-interface`
-2. `sudo $EDITOR /usr/bin/chrome-remote-interface` and change `Line 190` from `console.log(display(tabs))` to `console.log(display(JSON.stringify(tabs))`
+2. `sudo $EDITOR /usr/bin/chrome-remote-interface` and change `Line 190` from `console.log(display(tabs))` to `console.log(display(JSON.stringify(tabs)))`
 3. Copy `chrome-switch-tabs` to a location which is in your path
 3. Run `google-chrome/chromium --remote-debugging-port=9222`
 4. Invoke rofi with `rofi -modi 'chrome:chrome-switch-tabs' -show chrome`
