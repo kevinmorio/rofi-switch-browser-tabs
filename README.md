@@ -26,8 +26,8 @@ Chrome
 
 #### Installation
 1. `npm install -g chrome-remote-interface`
-2. `sudo $EDITOR /usr/bin/chrome-remote-interface` and change `Line 190` from `console.log(display(tabs))` to `console.log(display(JSON.stringify(tabs)))`
-3. Copy `chrome-switch-tabs` to a location which is in your path
+2. `sudo $EDITOR /usr/bin/chrome-remote-interface` and change `Line 190` from `console.log(display(tabs))` to `console.log(display(JSON.stringify(tabs)))` (this step can be skipped in newer versions of `chrome-remote-interface`)
+3. Copy `chrome-switch-tabs` (the file, not the folder) to a location which is in your path
 3. Run `google-chrome/chromium --remote-debugging-port=9222`
 4. Invoke rofi with `rofi -modi 'chrome:chrome-switch-tabs' -show chrome`
 
@@ -37,5 +37,5 @@ Known bugs
 #### Firefox
 Firefox does not load all opened tabs at startup. Unfortunately only loaded tabs can be shown.
 
-[rofi]: https://davedavenport.github.io/rofi/
-[MozRepl]: https://addons.mozilla.org/en-US/firefox/addon/mozrepl/
+[rofi]: https://github.com/davatorium/rofi
+[MozRepl]: https://github.com/bard/mozrepl
